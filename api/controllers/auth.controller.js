@@ -2,6 +2,8 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+
+// const jwt=require("jsonwebtoken")
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
@@ -11,7 +13,7 @@ export const signup = async (req, res, next) => {
 
   try {
     await newUser.save();
-    
+
     // console.log(req.body)
     res.status(201).json("User created successfully");
   } catch (error) {
@@ -29,11 +31,21 @@ export const signin = async (req, res, next) => {
     if (!validpassword) return next(errorHandler(404, "Invalid credentials"));
 
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-    console.log(token)
+    // console.log(token);
+    // console.log(validUser._id);
     const { password: pass, ...rest } = validUser._doc;
     // const data = {rest,token}
     // res.locals.auth = true
-    res.cookie("token1", token, { httpOnly: true,path:'/' }).status(200).json(data);
+    const expirationDate = new Date(Date.now() + 86400000);
+    res
+      .cookie("access_token", token, { expires: expirationDate, domain: 'localhost', // Replace with your domain
+      path: '/', // Set cookie for the entire domain
+      // httpOnly: true, // Make cookie accessible only through HTTP(S) requests
+      // secure: true
+    })
+      .status(200)
+      .json(rest);
+    // console.log("cookie", req.cookies.access_token);
   } catch (error) {
     next(error);
   }
@@ -45,7 +57,15 @@ export const google = async (req, res, next) => {
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = user._doc;
-      res.cookie("token1", token, { httpOnly: true,path:'/' }).status(200).json(rest);
+      const expirationDate = new Date(Date.now() + 86400000);
+
+      res
+        .cookie("access_token", token, {expires: expirationDate, domain: 'localhost', // Replace with your domain
+        path: '/', // Set cookie for the entire domain
+        httpOnly: true, // Make cookie accessible only through HTTP(S) requests
+        secure: true})
+        .status(200)
+        .json(rest);
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
@@ -62,10 +82,29 @@ export const google = async (req, res, next) => {
 
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const expirationDate = new Date(Date.now() + 86400000);
+
+
       const { password: pass, ...rest } = newUser._doc;
-      res.cookie("token1", token, { httpOnly: true,path:'/' }).status(200).json(rest);
+      res
+        .cookie("access_token", token, { expires: expirationDate, domain: 'localhost', // Replace with your domain
+        path: '/', // Set cookie for the entire domain
+        httpOnly: true, // Make cookie accessible only through HTTP(S) requests
+        secure: true })
+        .status(200)
+        .json(rest);
     }
   } catch (error) {
     next(error);
   }
 };
+
+
+export const signout= async (req,res,next)=>{
+  try {
+    res.clearCookie('access_token');
+    res.status(200).json("User has been loggedOut");
+  } catch (error) {
+    next(error);
+  }
+}

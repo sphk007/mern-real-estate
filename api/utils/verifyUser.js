@@ -3,11 +3,10 @@ import { errorHandler } from "./error.js";
 
 
 export const verifyToken=(req,res,next)=>{
-    console.log('Cookie Headers:', req.headers.origin);
-    const token =req.cookies.token1;
-    console.log(token)
-    if(!token){ 
-        
+    // console.log('Cookie Headers:', req.headers.origin);
+    const token =req.cookies.access_token;
+    console.log("token",token)
+    if(!token){  
         return next(errorHandler(401,"Unauthorized from verify user"));
     }
 
