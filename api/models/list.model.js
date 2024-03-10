@@ -6,6 +6,10 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    property_type: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -34,9 +38,9 @@ const listingSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    parking:{
+    parking: {
       type: Boolean,
-      required:true,
+      required: true,
     },
     type: {
       type: String,
@@ -54,6 +58,18 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    avatar: {
+      type: String,
+      default: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+    },
+    landlordname:{
+      type:String,
+      require:true,
+    },
+    landlordemail:{
+      type:String,
+      require:true,
+    }
   },
   {
     timestamps: true,
