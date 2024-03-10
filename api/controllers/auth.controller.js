@@ -40,8 +40,8 @@ export const signin = async (req, res, next) => {
     res
       .cookie("access_token", token, { expires: expirationDate, domain: 'localhost', // Replace with your domain
       path: '/', // Set cookie for the entire domain
-      // httpOnly: true, // Make cookie accessible only through HTTP(S) requests
-      // secure: true
+      httpOnly: true, // Make cookie accessible only through HTTP(S) requests
+      secure: true
     })
       .status(200)
       .json(rest);
