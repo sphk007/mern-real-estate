@@ -69,7 +69,15 @@ const listingSchema = new mongoose.Schema(
     landlordemail:{
       type:String,
       require:true,
-    }
+    },
+    lat:{
+      type:Number,
+      required:true,
+    },
+    lng:{
+      type:Number,
+      required:true,
+    },
   },
   {
     timestamps: true,
