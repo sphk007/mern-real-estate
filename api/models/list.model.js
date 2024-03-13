@@ -78,6 +78,10 @@ const listingSchema = new mongoose.Schema(
       type:Number,
       required:true,
     },
+    panorama:{
+      type:String,
+      require:true,
+    },
   },
   {
     timestamps: true,
