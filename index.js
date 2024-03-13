@@ -5,6 +5,7 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listRouter from "./routes/list.route.js";
 import cookieParser from "cookie-parser";
+import cors from cors
 // import cors from "cors";
 
 dotenv.config();
@@ -22,7 +23,11 @@ app.use(express.json());
 app.use(cookieParser());
 // app.use(cors());
 
-
+app.use(cors());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://home-sphere.vercel.app');
+    next();
+})
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
