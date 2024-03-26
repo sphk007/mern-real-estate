@@ -20,7 +20,7 @@ const app = express();
 
 app.use(cors(
     {
-    origin:["https://deploy-mern-lwhq.vercel.app"],
+    origin:["https://home-sphere-api.vercel.app"],
     methods:["POST","GET","DELETE"],
     credentials: true
 }));
